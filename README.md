@@ -1,1 +1,1 @@
-![Logo](https://github.com/andreluizs/arch-cvc/blob/master/dotfiles/docs/logo.png) # Arch Linux
+<img src="https://github.com/andreluizs/arch-cvc/blob/master/dotfiles/docs/logo.png" width="40%"> Arch Linux
