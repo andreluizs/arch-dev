@@ -3,49 +3,8 @@
 set -o errexit
 set -o pipefail
 
-DOTFILES="https://raw.githubusercontent.com/andreluizs/arch-cvc/master/dotfiles"
-
-# XFCE
-XFCE=(
-  "xfce4"
-  "xfce4-goodies"
-  "file-roller"
-  "xfce4-whiskermenu-plugin"
-  "alacarte"
-  "thunar-volman"
-  "thunar-archive-plugin"
-  "xfce4-dockbarx-plugin"
-  "xfce-theme-greybird"
-  "elementary-xfce-icons"
-  "xfce-polkit-git")
-
-DEV=(
-  "ttf-fira-code"
-  "visual-studio-code-bin"
-  "insomnia"
-  "zsh"
-  "zsh-completions"
-  "slack-desktop"
-  "teams-insiders"
-  "telegram-desktop"
-  "nvm"
-  "jabba"
-)
-
-EXTRA=(
-  "google-chrome"
-  "libreoffice-fresh"
-  "libreoffice-fresh-pt-br"
-  "pamac-aur-tray-appindicator-git"
-)
-
-function installPkg() {
-  local pacotes=("$@")
-  for i in "${pacotes[@]}"; do
-    echo "Install: ${i}"
-    yay -S ${i} --needed --noconfirm --quiet --noinfo
-  done
-}
+# source config.sh
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-cvc/master/config.sh)
 
 function installLightDM() {
   echo "Install LightDM"
@@ -62,42 +21,40 @@ function installDocker() {
 }
 
 function installVpn() {
-  yay -S pritunl-client openvpngui --needed --noconfirm --quiet --noinfo
+  yay -S --needed --noconfirm --quiet --noinfo
 }
 
 function installIntellij() {
-  name="ideaIU-2020.1.2"
-  mkdir -p ~/jetbrains && cd ~/jetbrains
+  mkdir -p ~/.tmp_intellij && cd ~/.tmp_intellij
   echo "# Baixando"
-  wget -c "https://download.jetbrains.com/idea/${name}.tar.gz" -q --show-progress
+  wget -c "https://download.jetbrains.com/idea/${INTELLIJ}" -q --show-progress
   echo "# Descompactando"
-  tar -xzf "${name}.tar.gz"
+  tar -xzf $INTELLIJ
   echo "# Instalando"
   sudo mv idea-* /opt/intellij-ultimate
   sudo chown -R $USER /opt/intellij-ultimate
   bash /opt/intellij-ultimate/bin/idea.sh &
   echo "# Limpando arquivos desnecessários"
-  rm -rf ~/jetbrains
+  rm -rf ~/tmp_intellij
   echo "# Instalação concluída"
 }
 
 function installMaven() {
-  file="apache-maven-3.6.3-bin.tar.gz"
-  mkdir -p ~/maven && cd ~/maven
+  mkdir -p ~/.tmp_maven && cd ~/.tmp_maven
   echo "# Baixando"
-  wget -c "http://ftp.unicamp.br/pub/apache/maven/maven-3/3.6.3/binaries/${file}" -q --show-progress
+  wget -c "http://ftp.unicamp.br/pub/apache/maven/maven-3/3.6.3/binaries/${APACHE_MAVEN}" -q --show-progress
   echo "# Descompactando"
-  tar -xzf $file
+  tar -xzf $APACHE_MAVEN
   rm -rf *.tar.gz
   echo "# Instalando"
   sudo rm -rf /opt/maven
   sudo mv apache-* /opt/maven
   sudo chown -R $USER /opt/maven
   echo "# Adicionando à variável no ambiente"
-  wget "${DOTFILES}/maven/path.txt" -O >> $HOME/.zshrc
+  wget "${DOTFILES}/maven/path.txt" -qO- >>"${HOME}/.zshrc"
   mkdir -p $HOME/.m2 && wget "${DOTFILES}/maven/settings.xml" -qO $HOME/.m2/settings.xml
   echo "# Limpando arquivos desnecessários"
-  rm -rf ~/maven
+  rm -rf ~/.tmp_maven
   echo "# Instalação concluída"
 }
 
