@@ -1,0 +1,13 @@
+{
+  "registry-mirrors": [],
+  "debug": true,
+  "storage-opt": [
+    "size=10G"
+  ],
+  "experimental": true,
+  "insecure-registries": [
+    "iac-harbor.compute.br-sao-1.cvccorp.cloud"
+  ],
+  "bip": "192.168.10.5/23",
+  "fixed-cidr": "192.168.10.5/23"
+}
