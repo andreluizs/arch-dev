@@ -3,3 +3,7 @@
 </p>
 
 ## Arch CVC - Scripts
+
+> config.sh  
+> install.sh  
+> pos-install.sh  
