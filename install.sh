@@ -34,7 +34,7 @@ function _spinner(){
     done
 }
 
-function iniciar(){
+function init(){
     clear
     echo "+---------------- ARCH - INSTALL ---------------+"
     umount -R /mnt &> /dev/null || /bin/true
@@ -43,13 +43,13 @@ function iniciar(){
     _chroot "reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist"
 }
 
-function formatar_disco(){
+function formatHD(){
     echo "+ Formatando as partições."
     wipefs -af "${SSD}2" &> /dev/null
     mkfs.ext4 -F -L ROOT "${SSD}2" &> /dev/null
 }
 
-function montar_disco(){
+function mountPartition(){
     echo "+ Montando as partições."
     mount "${SSD}2" /mnt
     mkdir -p /mnt/boot
@@ -60,7 +60,7 @@ function montar_disco(){
     echo "+-----------------------------------------------+"
 }
 
-function instalar_sistema(){
+function installOperationSystem(){
    
     (pacstrap /mnt base base-devel linux linux-firmware ${BASE_PKG} &> /dev/null) &
     _spinner "+ Instalando o sistema:" $! 
@@ -73,7 +73,7 @@ function instalar_sistema(){
     _chroot "pacman -Sy" &> /dev/null
 }
 
-function criar_swapfile(){
+function createSwapFile(){
     echo "+ Criando o swapfile com 4GB."
     _chroot "fallocate -l \"4096M\" /swapfile" 1> /dev/null
     _chroot "chmod 600 /swapfile" 1> /dev/null
@@ -97,7 +97,7 @@ function instalar_refind(){
     _chroot "echo ${arch_entrie} > /boot/refind_linux.conf"
 }
 
-function instalar_systemd_boot(){
+function installSystemDBoot(){
     echo "+ Instalando o bootloader."
     local loader="timeout 3\ndefault arch"
     local arch_entrie="title Arch Linux\\nlinux /vmlinuz-linux\\n\\ninitrd  intel-ucode.img\\ninitrd initramfs-linux.img\\noptions root=${SSD}2 rw"
@@ -113,7 +113,7 @@ function instalar_systemd_boot(){
     _chroot "mkinitcpio -p linux"
 }
 
-function configurar_sistema(){
+function setupSystem(){
     echo "+ Configurando o idioma."
     _chroot "echo -e \"KEYMAP=br-abnt2\\nFONT=\\nFONT_MAP=\" > /etc/vconsole.conf"
     _chroot "sed -i '/pt_BR/,+1 s/^#//' /etc/locale.gen"
@@ -136,13 +136,13 @@ function configurar_sistema(){
     
 }
 
-iniciar
-formatar_disco
-montar_disco
-instalar_sistema
-criar_swapfile
-instalar_systemd_boot
-configurar_sistema
+init
+formatHD
+mountPartition
+installOperationSystem
+createSwapFile
+installSystemDBoot
+setupSystem
 echo "+-------- SISTEMA INSTALADO COM SUCESSO --------+"
 umount -R /mnt &> /dev/null || /bin/true
 echo
