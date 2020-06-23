@@ -50,6 +50,6 @@ function installPkg() {
   local packages=("$@")
   for i in "${packages[@]}"; do
     echo "Install: ${i}"
-    yay -S ${i} --needed --noconfirm --quiet --noinfo
+    yay -S ${i} --needed --noconfirm --quiet
   done
 }
