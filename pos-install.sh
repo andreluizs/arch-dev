@@ -8,20 +8,19 @@ source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-cvc/master/co
 
 function installLightDM() {
   echo "Install LightDM"
-  yay -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings light-locker --needed --noconfirm --quiet --noinfo
+  yay -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings light-locker --needed --noconfirm --quiet
   sudo sed -i '/^#greeter-session/c \greeter-session=lightdm-gtk-greeter' /etc/lightdm/lightdm.conf
   sudo systemctl enable lightdm.service
 }
 
 function installDocker() {
-  echo "Install Docker"
-  yay -S docker docker-compose --needed --noconfirm --quiet --noinfo
+  echo "# Instalando o Docker e Docker Compose"
+  yay -S docker docker-compose --needed --noconfirm --quiet 
+  echo "# Adicionado o ${USER} ao grupo do docker"
   usermod -aG docker $USER
+  echo "# Modificando o range de IP's para não conflitar com os ambientes de QA da CVC"
   sudo wget "${DOTFILES}/docker/daemon.json" -qO /etc/docker/daemon.json
-}
-
-function installVpn() {
-  yay -S --needed --noconfirm --quiet --noinfo
+  echo "# Instalação concluída."
 }
 
 function installIntellij() {
@@ -56,6 +55,10 @@ function installMaven() {
   echo "# Limpando arquivos desnecessários"
   rm -rf ~/.tmp_maven
   echo "# Instalação concluída"
+}
+
+function installVirtualBox() {
+  sudo pacman -S virtualbox-host-modules-arch virtualbox --noconfirm --needed --quiet
 }
 
 #installPkg $XFCE

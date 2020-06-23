@@ -13,6 +13,8 @@ BASE_PKG+="gnome-themes-standard gtk-engine-murrine gvfs xdg-user-dirs git nano 
 BASE_PKG+="noto-fonts-emoji ttf-dejavu ttf-liberation noto-fonts "
 BASE_PKG+="pulseaudio pulseaudio-alsa p7zip zip unzip unrar wget openssh xclip curl"
 
+POS_INSTALL="https://raw.githubusercontent.com/andreluizs/arch-cvc/master/pos-install.sh"
+
 function _chroot() {
   arch-chroot /mnt /bin/bash -c "$1"
 }
@@ -39,14 +41,24 @@ function init() {
   echo "+---------------- ARCH - INSTALL ---------------+"
   umount -R /mnt &>/dev/null || /bin/true
   echo "+ Configurando mirrors."
-  pacman -Sy reflector --needed --noconfirm
-  reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
+  pacman -Sy reflector --needed --noconfirm &> /dev/nul
+  reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist &> /dev/nul
 }
 
 function formatHD() {
+  echo "+ Resetanto a tabela de partições"
+  parted -s "$SSD" mklabel gpt 1> /dev/nul
+
+  echo "+ Criando a partição /boot"
+  parted "$SSD" mkpart ESP fat32 1MiB 513MiB &> /dev/nul
+  parted "$SSD" set 1 boot on &> /dev/nul
+
+  echo "+ Criando a partição /root"
+  parted "$SSD" mkpart primary ext4 513MiB 100% &> /dev/nul
+
   echo "+ Formatando as partições."
-  wipefs -af "${SSD}2" &>/dev/null
-  mkfs.ext4 -F -L ROOT "${SSD}2" &>/dev/null
+  mkfs.vfat -F32 "${SSD}1" -n BOOT &> /dev/nul
+  mkfs.ext4 -F -L ROOT "${SSD}2" &> /dev/nul
 }
 
 function mountPartition() {
@@ -69,12 +81,12 @@ function installOperationSystem() {
   echo "+ Gerando fstab."
   genfstab -U /mnt >>/mnt/etc/fstab
 
+  echo "+ Atualizando o mirrorlist."
+  _chroot "pacman -S reflector --needed --noconfirm" &>/dev/null
+  _chroot "reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist" &>/dev/null
   _chroot "sed -i '/multilib]/,+1  s/^#//' /etc/pacman.conf"
   _chroot "pacman -Sy" &>/dev/null
 
-  echo "+ Atualizando o mirrorlist."
-  _chroot "pacman -S reflector --needed --noconfirm"
-  _chroot "reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist"
 }
 
 function createSwapFile() {
@@ -93,13 +105,13 @@ function installSystemDBoot() {
   local arch_rescue="title Arch Linux (Rescue)\\nlinux vmlinuz-linux\\n\\ninitrd  intel-ucode.img\\ninitrd initramfs-linux.img\\noptions root=${SSD}2 rw systemd.unit=rescue.target"
   local boot_hook="[Trigger]\\nType = Package\\nOperation = Upgrade\\nTarget = systemd\\n\\n[Action]\\nDescription = Updating systemd-boot\\nWhen = PostTransaction\\nExec = /usr/bin/bootctl --path=/boot update"
 
-  _chroot "bootctl --path=/boot install"
-  _chroot "echo -e \"${loader}\" > /boot/loader/loader.conf"
-  _chroot "echo -e \"${arch_entrie}\" > /boot/loader/entries/arch.conf"
-  _chroot "echo -e \"${arch_rescue}\" > /boot/loader/entries/arch-rescue.conf"
-  _chroot "mkdir -p /etc/pacman.d/hooks"
-  _chroot "echo -e \"${boot_hook}\" > /etc/pacman.d/hooks/systemd-boot.hook"
-  _chroot "mkinitcpio -p linux"
+  _chroot "bootctl --path=/boot install" &>/dev/null
+  _chroot "echo -e \"${loader}\" > /boot/loader/loader.conf" &>/dev/null
+  _chroot "echo -e \"${arch_entrie}\" > /boot/loader/entries/arch.conf" &>/dev/null
+  _chroot "echo -e \"${arch_rescue}\" > /boot/loader/entries/arch-rescue.conf" &>/dev/null
+  _chroot "mkdir -p /etc/pacman.d/hooks" &>/dev/null
+  _chroot "echo -e \"${boot_hook}\" > /etc/pacman.d/hooks/systemd-boot.hook" &>/dev/null
+  _chroot "mkinitcpio -p linux" &>/dev/null
 }
 
 function setupSystem() {
@@ -123,6 +135,9 @@ function setupSystem() {
   _chuser "cd /home/${MY_USER}/tmp/yay && makepkg -si --noconfirm" &>/dev/null
   _chuser "rm -rf /home/${MY_USER}/tmp"
 
+  echo "+ Baixando o pos-install.sh na pasta home"
+  _chuser "wget ${POS_INSTALL} -qO /home/${MY_USER}/pos-install.sh"
+  
 }
 
 init
