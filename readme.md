@@ -7,3 +7,4 @@
 > config.sh  
 > install.sh  
 > pos-install.sh  
+> dev-install.sh

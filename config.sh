@@ -3,10 +3,19 @@
 set -o errexit
 set -o pipefail
 
-DOTFILES="https://raw.githubusercontent.com/andreluizs/arch-cvc/master/dotfiles"
+base_git_hub_url="https://raw.githubusercontent.com/andreluizs/arch-cvc/master"
+dotfiles_url="${base_git_hub_url}/dotfiles"
+pos_install_url="${base_git_hub_url}/pos-install.sh"
+dev_install_url="${base_git_hub_url}/dev-install.sh"
+
+# Pacstrap
+base_package="intel-ucode networkmanager bash-completion xorg xorg-xinit xf86-video-intel ntfs-3g "
+base_package+="gnome-themes-standard gtk-engine-murrine gvfs xdg-user-dirs git nano "
+base_package+="noto-fonts-emoji ttf-dejavu ttf-liberation noto-fonts "
+base_package+="pulseaudio pulseaudio-alsa p7zip zip unzip unrar wget openssh xclip curl"
 
 # XFCE
-XFCE=(
+desktop_environment=(
   "xfce4"
   "xfce4-goodies"
   "file-roller"
@@ -19,7 +28,7 @@ XFCE=(
   "elementary-xfce-icons"
   "xfce-polkit-git")
 
-DEV=(
+developer_tools=(
   "ttf-fira-code"
   "visual-studio-code-bin"
   "insomnia"
@@ -34,22 +43,49 @@ DEV=(
   "openvpngui"
 )
 
-EXTRA=(
+extra=(
   "google-chrome"
   "libreoffice-fresh"
   "libreoffice-fresh-pt-br"
   "pamac-aur-tray-appindicator-git"
 )
 
+# Bootloader Entries
+loader="timeout 3\ndefault arch"
+arch_entrie="title Arch Linux\\nlinux /vmlinuz-linux\\n\\ninitrd  intel-ucode.img\\ninitrd initramfs-linux.img\\noptions root=${ssd}2 rw"
+arch_rescue="title Arch Linux (Rescue)\\nlinux vmlinuz-linux\\n\\ninitrd  intel-ucode.img\\ninitrd initramfs-linux.img\\noptions root=${ssd}2 rw systemd.unit=rescue.target"
+boot_hook="[Trigger]\\nType = Package\\nOperation = Upgrade\\nTarget = systemd\\n\\n[Action]\\nDescription = Updating systemd-boot\\nWhen = PostTransaction\\nExec = /usr/bin/bootctl --path=/boot update"
+
 # Programs Versions
-APACHE_MAVEN="apache-maven-3.6.3-bin.tar.gz"
-INTELLIJ="ideaIU-2020.1.2.tar.gz"
+maven_version="apache-maven-3.6.3-bin.tar.gz"
+intellij_version="ideaIU-2020.1.2.tar.gz"
 
 # Help Functions
-function installPkg() {
+function _chroot() {
+  arch-chroot /mnt /bin/bash -c "$1"
+}
+
+function _chuser() {
+  _chroot "su ${my_user} -c \"$1\""
+}
+
+function _spinner() {
+  local pid=$2
+  local i=1
+  local param=$1
+  local sp='/-\|'
+  echo -ne "$param "
+  while [ -d /proc/"${pid}" ]; do
+    printf "[%c]   " "${sp:i++%${#sp}:1}"
+    sleep 0.75
+    printf "\\b\\b\\b\\b\\b\\b"
+  done
+}
+
+function install_pkg() {
   local packages=("$@")
   for i in "${packages[@]}"; do
     echo "Install: ${i}"
-    yay -S ${i} --needed --noconfirm --quiet
+    yay -S ${i} --needed --noconfirm --quiet &>/dev/null
   done
 }
