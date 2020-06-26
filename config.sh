@@ -32,11 +32,8 @@ developer_tools=(
   "ttf-fira-code"
   "visual-studio-code-bin"
   "insomnia"
-  "zsh"
-  "zsh-completions"
   "slack-desktop"
   "teams-insiders"
-  "telegram-desktop"
   "nvm"
   "jabba"
   "pritunl-client"
@@ -48,6 +45,9 @@ extra=(
   "libreoffice-fresh"
   "libreoffice-fresh-pt-br"
   "pamac-aur-tray-appindicator-git"
+  "zsh"
+  "zsh-completions"
+  "telegram-desktop"
 )
 
 # Bootloader Entries
@@ -85,7 +85,7 @@ function _spinner() {
 function install_pkg() {
   local packages=("$@")
   for i in "${packages[@]}"; do
-    echo "Install: ${i}"
+    echo "+ Instalando: ${i}"
     yay -S ${i} --needed --noconfirm --quiet &>/dev/null
   done
 }

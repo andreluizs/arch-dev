@@ -7,30 +7,30 @@ set -o pipefail
 source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-cvc/master/config.sh)
 
 function install_docker() {
-  echo "# Instalando o Docker e Docker Compose"
+  echo "+ Instalando o Docker e Docker Compose"
   yay -S docker docker-compose --needed --noconfirm --quiet
-  echo "# Adicionado o ${USER} ao grupo do docker"
+  echo "+ Adicionado o ${USER} ao grupo do docker"
   sudo usermod -aG docker $USER
-  echo "# Modificando o range de IP's para não conflitar com os ambientes de QA da CVC"
+  echo "+ Modificando o range de IP's para não conflitar com os ambientes de QA da CVC"
   sudo systemctl start docker.service
   sudo wget "${dotfiles_url}/docker/daemon.json" -qO /etc/docker/daemon.json
   sudo systemctl restart docker.service
-  echo "# Instalação concluída."
+  echo "+ Instalação concluída."
 }
 
 function install_intellij() {
   mkdir -p ~/.tmp_intellij && cd ~/.tmp_intellij
-  echo "# Baixando"
+  echo "+ Baixando"
   wget -c "https://download.jetbrains.com/idea/${intellij_version}" -q --show-progress
-  echo "# Descompactando"
+  echo "+ Descompactando"
   tar -xzf $intellij_version
-  echo "# Instalando"
+  echo "+ Instalando"
   sudo mv idea-* /opt/intellij-ultimate
   sudo chown -R $USER /opt/intellij-ultimate
   bash /opt/intellij-ultimate/bin/idea.sh &
-  echo "# Limpando arquivos desnecessários"
+  echo "+ Limpando arquivos desnecessários"
   rm -rf ~/tmp_intellij
-  echo "# Instalação concluída"
+  echo "+ Instalação concluída"
 }
 
 function install_maven() {
@@ -60,7 +60,8 @@ function setup_almundo() {
   sudo echo "127.0.0.1   dev.almundo.com.ar" >>/etc/hosts
 }
 
-#install_pkg $developer_tools
-#install_docker
-#install_intellij
-#install_maven
+clear
+install_pkg $developer_tools
+install_docker
+install_intellij
+install_maven

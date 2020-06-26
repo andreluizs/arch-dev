@@ -13,6 +13,7 @@ function install_light_dm() {
   sudo systemctl enable lightdm.service
 }
 
+clear
 install_pkg $desktop_environment
 install_light_dm
 install_pkg $extra
