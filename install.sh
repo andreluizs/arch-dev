@@ -76,9 +76,9 @@ function install_systemd_boot() {
   echo "+ Instalando o bootloader."
   _chroot "bootctl --path=/boot install" &>/dev/null
   _chroot "wget ${dotfiles_url}/bootloader/loader.conf -qO /boot/loader/loader.conf"
-  _chroot "wget ${dotfiles_url}/bootloader/arch.conf -qO /boot/entries/arch.conf"
+  _chroot "wget ${dotfiles_url}/bootloader/arch.conf -qO /boot/loader/entries/arch.conf"
   _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch.conf"
-  _chroot "wget ${dotfiles_url}/bootloader/arch-rescue.conf -qO /boot/entries/arch-rescue.conf"
+  _chroot "wget ${dotfiles_url}/bootloader/arch-rescue.conf -qO /boot/loader/entries/arch-rescue.conf"
   _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch-rescue.conf"
 
   # _chroot "echo -e \"${loader}\" > /boot/loader/loader.conf" &>/dev/null
