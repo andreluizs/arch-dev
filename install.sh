@@ -48,7 +48,7 @@ function mount_partition() {
 }
 
 function install_base_system() {
-  (pacstrap /mnt base base-devel linux linux-firmware ${base_package} &>/dev/null) &
+  (pacstrap /mnt base base-devel linux-lts linux-firmware ${base_package} &>/dev/null) &
   _spinner "+ Instalando o sistema:" $!
   echo -ne "[100%]\\n"
 
@@ -65,7 +65,7 @@ function install_base_system() {
 
 function create_swapfile() {
   echo "+ Criando o swapfile com 4GB."
-  _chroot "fallocate -l \"4096M\" /swapfile" 1>/dev/null
+  _chroot "dd if=/dev/zero of=/swapfile bs=1M count=4096 status=progress" 1>/dev/null
   _chroot "chmod 600 /swapfile" 1>/dev/null
   _chroot "mkswap /swapfile" 1>/dev/null
   _chroot "swapon /swapfile" 1>/dev/null
@@ -80,14 +80,9 @@ function install_systemd_boot() {
   _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch.conf"
   _chroot "wget ${dotfiles_url}/bootloader/arch-rescue.conf -qO /boot/loader/entries/arch-rescue.conf"
   _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch-rescue.conf"
-
-  # _chroot "echo -e \"${loader}\" > /boot/loader/loader.conf" &>/dev/null
-  # _chroot "echo -e \"${arch_entrie}\" > /boot/loader/entries/arch.conf" &>/dev/null
-  # _chroot "echo -e \"${arch_rescue}\" > /boot/loader/entries/arch-rescue.conf" &>/dev/null
   _chroot "mkdir -p /etc/pacman.d/hooks" &>/dev/null
-  # _chroot "echo -e \"${boot_hook}\" > /etc/pacman.d/hooks/systemd-boot.hook" &>/dev/null
   _chroot "wget ${dotfiles_url}/bootloader/systemd-boot.hook -qO /etc/pacman.d/hooks/systemd-boot.hook"
-  _chroot "mkinitcpio -p linux" &>/dev/null
+  _chroot "mkinitcpio -p linux-lts" &>/dev/null
 }
 
 function setup_system() {

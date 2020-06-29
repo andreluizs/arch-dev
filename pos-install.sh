@@ -14,6 +14,6 @@ function install_light_dm() {
 }
 
 clear
-install_pkg $desktop_environment
+install_pkg "${desktop_environment[@]}"
 install_light_dm
-install_pkg $extra
+install_pkg "${extra[@]}"

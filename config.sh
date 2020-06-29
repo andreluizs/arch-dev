@@ -50,12 +50,6 @@ extra=(
   "telegram-desktop"
 )
 
-# Bootloader Entries
-loader="timeout 3\ndefault arch"
-arch_entrie="title Arch Linux\\nlinux /vmlinuz-linux\\n\\ninitrd  intel-ucode.img\\ninitrd initramfs-linux.img\\noptions root=${ssd}2 rw"
-arch_rescue="title Arch Linux (Rescue)\\nlinux vmlinuz-linux\\n\\ninitrd  intel-ucode.img\\ninitrd initramfs-linux.img\\noptions root=${ssd}2 rw systemd.unit=rescue.target"
-boot_hook="[Trigger]\\nType = Package\\nOperation = Upgrade\\nTarget = systemd\\n\\n[Action]\\nDescription = Updating systemd-boot\\nWhen = PostTransaction\\nExec = /usr/bin/bootctl --path=/boot update"
-
 # Programs Versions
 maven_version="apache-maven-3.6.3-bin.tar.gz"
 intellij_version="ideaIU-2020.1.2.tar.gz"
