@@ -65,7 +65,7 @@ function install_base_system() {
 
 function create_swapfile() {
   echo "+ Criando o swapfile com 4GB."
-  _chroot "dd if=/dev/zero of=/swapfile bs=1M count=4096 status=progress" 1>/dev/null
+  _chroot "dd if=/dev/zero of=/swapfile bs=1M count=4096 status=progress" &>/dev/null
   _chroot "chmod 600 /swapfile" 1>/dev/null
   _chroot "mkswap /swapfile" 1>/dev/null
   _chroot "swapon /swapfile" 1>/dev/null
