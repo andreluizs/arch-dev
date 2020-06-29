@@ -6,6 +6,13 @@ set -o pipefail
 # source config.sh
 source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-cvc/master/config.sh)
 
+function install_developer_tools() {
+  for i in "${developer_tools[@]}"; do
+    echo "+ Instalando: ${i}"
+    yay -S ${i} --needed --noconfirm --quiet &>/dev/null
+  done
+}
+
 function install_docker() {
   echo "+ Instalando o Docker e Docker Compose"
   yay -S docker docker-compose --needed --noconfirm --quiet
@@ -52,16 +59,13 @@ function install_maven() {
   echo "# Instalação concluída"
 }
 
-function install_vbox() {
-  sudo pacman -S virtualbox-host-modules-arch virtualbox --noconfirm --needed --quiet
-}
-
 function setup_almundo() {
   sudo echo "127.0.0.1   dev.almundo.com.ar" >>/etc/hosts
 }
 
 clear
-install_pkg $developer_tools
+install_developer_tools
 install_docker
 install_intellij
 install_maven
+setup_almundo

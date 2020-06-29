@@ -26,7 +26,8 @@ desktop_environment=(
   "xfce4-dockbarx-plugin"
   "xfce-theme-greybird"
   "elementary-xfce-icons"
-  "xfce-polkit-git")
+  "xfce-polkit-git"
+)
 
 developer_tools=(
   "ttf-fira-code"
@@ -48,6 +49,8 @@ extra=(
   "zsh"
   "zsh-completions"
   "telegram-desktop"
+  "virtualbox-host-dkms"
+  "virtualbox"
 )
 
 # Programs Versions
