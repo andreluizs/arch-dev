@@ -9,7 +9,7 @@ pos_install_url="${base_git_hub_url}/pos-install.sh"
 dev_install_url="${base_git_hub_url}/dev-install.sh"
 
 # Pacstrap
-base_package="intel-ucode networkmanager bash-completion xorg xorg-xinit xf86-video-intel ntfs-3g "
+base_package="intel-ucode networkmanager networkmanager-openconnect bash-completion xorg xorg-xinit xf86-video-intel ntfs-3g "
 base_package+="gnome-themes-standard gtk-engine-murrine gvfs xdg-user-dirs git nano "
 base_package+="noto-fonts-emoji ttf-dejavu ttf-liberation noto-fonts "
 base_package+="pulseaudio pulseaudio-alsa p7zip zip unzip unrar wget openssh xclip curl"
