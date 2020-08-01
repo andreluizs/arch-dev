@@ -32,9 +32,9 @@ function install_intellij() {
   echo "+ Descompactando"
   tar -xzf $intellij_version
   echo "+ Instalando"
-  sudo mv idea-* /opt/intellij-ultimate
-  sudo chown -R $USER /opt/intellij-ultimate
-  bash /opt/intellij-ultimate/bin/idea.sh &
+  sudo mv idea-* /opt/intellij-community
+  sudo chown -R $USER /opt/intellij-community
+  bash /opt/intellij-community/bin/idea.sh &
   echo "+ Limpando arquivos desnecessários"
   rm -rf ~/tmp_intellij
   echo "+ Instalação concluída"
