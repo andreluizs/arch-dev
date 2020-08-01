@@ -37,7 +37,6 @@ developer_tools=(
   "teams-insiders"
   "nvm"
   "jabba"
-  "pritunl-client"
   "openvpngui"
 )
 
@@ -55,7 +54,7 @@ extra=(
 
 # Programs Versions
 maven_version="apache-maven-3.6.3-bin.tar.gz"
-intellij_version="ideaIU-2020.1.2.tar.gz"
+intellij_version="ideaIC-2020.2.tar.gz"
 
 # Help Functions
 function _chroot() {
