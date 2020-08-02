@@ -35,9 +35,7 @@ developer_tools=(
   "insomnia"
   "slack-desktop"
   "teams-insiders"
-  "nvm"
-  "jabba"
-  "openvpngui"
+  "openfortigui"
 )
 
 extra=(
