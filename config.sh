@@ -26,6 +26,7 @@ desktop_environment=(
   "xfce4-dockbarx-plugin"
   "xfce-theme-greybird"
   "elementary-xfce-icons"
+  "mugshot"
   "xfce-polkit-git"
 )
 
