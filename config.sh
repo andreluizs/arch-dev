@@ -28,6 +28,7 @@ desktop_environment=(
   "elementary-xfce-icons"
   "mugshot"
   "pavucontrol"
+  "gnome-keyring"
   "xfce-polkit-git"
 )
 
