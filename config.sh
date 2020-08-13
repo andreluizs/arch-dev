@@ -27,6 +27,7 @@ desktop_environment=(
   "xfce-theme-greybird"
   "elementary-xfce-icons"
   "mugshot"
+  "galculator"
   "pavucontrol"
   "gnome-keyring"
   "xfce-polkit-git"
