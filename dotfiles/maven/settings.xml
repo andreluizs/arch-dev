@@ -1,59 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-          xsi:schemaLocatiosn="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <servers>
-    <server>
-        <id>deployment</id>
-        <username>deployment</username>
-        <password>almundo-deployment</password>
-    </server>
-    <server>
-        <id>local</id>
-        <username>admin</username>
-        <password>admin123</password>
-    </server>
-  </servers>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocatiosn="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
 
-  <profiles>
-    <profile>
-      <id>almundo</id>
-      <repositories>
-        <repository>
-            <id>releases</id>
-            <url>http://nexus.almundo.com:8081/nexus/content/repositories/releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
+        <server>
+            <id>local</id>
+            <username>admin</username>
+            <password>admin123</password>
+        </server>
+        
+        <server>
+            <id>deployment</id>
+            <username>deployment</username>
+            <password>almundo-deployment</password>
+        </server>
+
+        <!-- CVC -->
+        <server>
+            <id>cvc</id>
+            <username>admin</username>
+            <password>cvc2015@@</password>
+        </server>
+
+        <server>
+            <id>central</id>
+            <username>admin</username>
+            <password>cvc2015@@</password>
+        </server>
+
+        <server>
             <id>snapshots</id>
-            <url>http://nexus.almundo.com:8081/nexus/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-      </repositories>
-    </profile>
+            <username>admin</username>
+            <password>cvc2015@@</password>
+        </server>
 
-    <profile>
-      <id>central</id>
-      <repositories>
-        <repository>
-          <id>central</id>
-          <name>Central Repository</name>
-          <url>https://repo1.maven.org/maven2</url>
-        </repository>
-      </repositories>
-    </profile>
+    </servers>
+    <profiles>
     
-  </profiles>
-  <activeProfiles>
-    <activeProfile>central</activeProfile>
-  </activeProfiles>
+        <profile>
+            <id>almundo</id>
+            <repositories>
+                <repository>
+                    <id>releases</id>
+                    <url>http://nexus.almundo.com:8081/nexus/content/repositories/releases/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>snapshots</id>
+                    <url>http://nexus.almundo.com:8081/nexus/content/repositories/snapshots/</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>cvc</id>
+            <repositories>
+                <repository>
+                    <id>releases</id>
+                    <url>http://nexus.cvc.com.br:8081/nexus/content/groups/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>snapshots</id>
+                    <url>http://nexus.cvc.com.br:8081/nexus/content/groups/public</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>central</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <name>Central Repository</name>
+                    <url>https://repo1.maven.org/maven2</url>
+                </repository>
+            </repositories>
+        </profile>
+
+    </profiles>
+    <activeProfiles>
+        <activeProfile>cvc</activeProfile>
+    </activeProfiles>
 </settings>
