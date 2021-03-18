@@ -3,19 +3,19 @@
 set -o errexit
 set -o pipefail
 
-base_git_hub_url="https://raw.githubusercontent.com/andreluizs/arch-cvc/master"
+base_git_hub_url="https://raw.githubusercontent.com/andreluizs/cvc-arch/master"
 dotfiles_url="${base_git_hub_url}/dotfiles"
 pos_install_url="${base_git_hub_url}/pos-install.sh"
 dev_install_url="${base_git_hub_url}/dev-install.sh"
 
 # Pacstrap
 base_package="intel-ucode networkmanager networkmanager-openconnect bash-completion xorg xorg-xinit xf86-video-intel ntfs-3g "
-base_package+="gnome-themes-standard gtk-engine-murrine gvfs xdg-user-dirs git nano "
+base_package+="gnome-themes-standard gtk-engine-murrine sassc gvfs xdg-user-dirs git nano "
 base_package+="noto-fonts-emoji ttf-dejavu ttf-liberation noto-fonts ttf-droid "
 base_package+="pulseaudio pulseaudio-alsa p7zip zip unzip unrar wget openssh xclip curl"
 
 # XFCE
-desktop_environment=(
+xfce=(
   "xfce4"
   "xfce4-goodies"
   "file-roller"
@@ -33,8 +33,22 @@ desktop_environment=(
   "xfce-polkit-git"
 )
 
+gnome=(
+  "gnome"
+  "gdm"
+  "gnome-tweaks"
+  "nautilus-sendto"
+  "gnome-nettool"
+  "gnome-usage"
+  "chrome-gnome-shell"
+  "xdg-user-dirs-gtk"
+  "fwupd"
+  "seahorse"
+)
+
 developer_tools=(
   "ttf-fira-code"
+  "ttf-jetbrains-mono"
   "visual-studio-code-bin"
   "insomnia"
   "slack-desktop"
@@ -56,7 +70,7 @@ extra=(
 
 # Programs Versions
 maven_version="apache-maven-3.6.3-bin.tar.gz"
-intellij_version="ideaIC-2020.2.tar.gz"
+intellij_version="ideaIC-2020.3.3.tar.gz"
 
 # Help Functions
 function _chroot() {

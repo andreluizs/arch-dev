@@ -4,10 +4,10 @@ set -o errexit
 set -o pipefail
 
 # source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-cvc/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/cvc-arch/master/config.sh)
 
 function install_desktop_environment() {
-  for i in "${desktop_environment[@]}"; do
+  for i in "${gnome[@]}"; do
     echo "+ Instalando: ${i}"
     yay -S ${i} --needed --noconfirm --quiet &>/dev/null
   done
@@ -29,5 +29,5 @@ function install_extras() {
 
 clear
 install_desktop_environment
-install_light_dm
+#install_light_dm
 install_extras

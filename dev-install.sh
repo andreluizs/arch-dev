@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 
 # source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-cvc/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/cvc-arch/master/config.sh)
 
 function install_developer_tools() {
   for i in "${developer_tools[@]}"; do

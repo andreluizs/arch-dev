@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 
 # source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-cvc/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/cvc-arch/master/config.sh)
 
 ssd="/dev/sda"
 my_user="andre"
@@ -64,8 +64,8 @@ function install_base_system() {
 }
 
 function create_swapfile() {
-  echo "+ Criando o swapfile com 4GB."
-  _chroot "dd if=/dev/zero of=/swapfile bs=1M count=4096 status=progress" &>/dev/null
+  echo "+ Criando o swapfile com 8GB."
+  _chroot "dd if=/dev/zero of=/swapfile bs=1M count=8196 status=progress" &>/dev/null
   _chroot "chmod 600 /swapfile" 1>/dev/null
   _chroot "mkswap /swapfile" 1>/dev/null
   _chroot "swapon /swapfile" 1>/dev/null
