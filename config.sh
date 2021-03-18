@@ -3,7 +3,7 @@
 set -o errexit
 set -o pipefail
 
-base_git_hub_url="https://raw.githubusercontent.com/andreluizs/cvc-arch/master"
+base_git_hub_url="https://raw.githubusercontent.com/andreluizs/arch-dev/master"
 dotfiles_url="${base_git_hub_url}/dotfiles"
 pos_install_url="${base_git_hub_url}/pos-install.sh"
 dev_install_url="${base_git_hub_url}/dev-install.sh"

@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 
 # source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/cvc-arch/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/config.sh)
 
 function install_desktop_environment() {
   for i in "${gnome[@]}"; do

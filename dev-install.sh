@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 
 # source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/cvc-arch/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/config.sh)
 
 function install_developer_tools() {
   for i in "${developer_tools[@]}"; do
@@ -53,14 +53,9 @@ function install_maven() {
   sudo chown -R $USER /opt/maven
   echo "# Adicionando à variável no ambiente"
   wget "${dotfiles_url}/maven/path.txt" -qO- >>"${HOME}/.zshrc"
-  mkdir -p "${HOME}/.m2" && wget "${dotfiles_url}/maven/settings.xml" -qO "${HOME}/.m2/settings.xml"
   echo "# Limpando arquivos desnecessários"
   rm -rf ~/.tmp_maven
   echo "# Instalação concluída"
-}
-
-function setup_almundo() {
-  sudo echo "127.0.0.1   dev.almundo.com.ar" >>/etc/hosts
 }
 
 clear
@@ -68,4 +63,3 @@ install_developer_tools
 install_docker
 install_intellij
 install_maven
-setup_almundo
