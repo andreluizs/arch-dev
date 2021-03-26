@@ -8,3 +8,11 @@
 > install.sh  
 > pos-install.sh  
 > dev-install.sh
+
+## How to Install ##
+> ```shell 
+> bash <(curl -s -L bit.do/arch-dev) 
+> ```
+  
+## Warning ##
+> This action will erase your disk
