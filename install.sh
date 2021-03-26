@@ -104,8 +104,8 @@ function setup_system() {
 
   echo "+ Installing yay package manager"
   _chuser "mkdir -p /home/${my_user}/tmp"
-  _chuser "cd /home/${my_user}/tmp && git clone https://aur.archlinux.org/yay.git" &>/dev/null
-  _chuser "cd /home/${my_user}/tmp/yay && makepkg -si --noconfirm" &>/dev/null
+  _chuser "cd /home/${my_user}/tmp && git clone https://aur.archlinux.org/yay.git"
+  _chuser "cd /home/${my_user}/tmp/yay && makepkg -si --noconfirm"
   _chuser "rm -rf /home/${my_user}/tmp"
 
   echo "+ Putting the pos-install.sh script in /home"
