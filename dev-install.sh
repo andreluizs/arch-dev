@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
 
 developer_tools=(
   "ttf-fira-code"
@@ -21,7 +21,7 @@ function install_docker() {
   sudo usermod -aG docker $USER
   echo "+ Modificando o range de IP's para não conflitar com os ambientes de QA da CVC"
   sudo systemctl start docker.service
-  sudo wget "${dotfiles_url}/docker/daemon.json" -qO /etc/docker/daemon.json
+  sudo wget "${configs_url}/docker/daemon.json" -qO /etc/docker/daemon.json
   sudo systemctl restart docker.service
   echo "+ Instalação concluída."
 }
@@ -55,7 +55,7 @@ function install_maven() {
   sudo mv apache-* /opt/maven
   sudo chown -R $USER /opt/maven
   echo "# Adicionando à variável no ambiente"
-  wget "${dotfiles_url}/maven/path.txt" -qO- >>"${HOME}/.zshrc"
+  wget "${configs_url}/maven/path.txt" -qO- >>"${HOME}/.zshrc"
   echo "# Limpando arquivos desnecessários"
   rm -rf ~/.tmp_maven
   echo "# Instalação concluída"

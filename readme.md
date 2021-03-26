@@ -4,15 +4,31 @@
 
 ## Arch DEV - Scripts
 
-> config.sh  
 > install.sh  
 > pos-install.sh  
 > dev-install.sh
 
-## How to Install ##
+## Install Base System
 > ```shell 
-> bash <(curl -s -L bit.do/arch-dev) 
+> # Warning this action will be erase your disk
+> bash <(curl -s -L bit.do/arch-dev/install.sh) 
 > ```
-  
-## Warning ##
-> This action will erase your disk
+## Pos-Install
+> After install base system, reboot and inside your `$HOME` and execute:
+> ```shell 
+> # Desktop Environment
+> bash pos-install.sh
+>
+> # Tools for Developer
+> bash dev-install.sh
+>```
+## Execute scripts directly
+>```shell 
+> # Pos-Install
+> bash <(curl -s -L bit.do/arch-dev/pos-install.sh) 
+>
+> # Tools for Developer
+> bash <(curl -s -L bit.do/arch-dev/dev-install.sh) 
+> ```
+
+

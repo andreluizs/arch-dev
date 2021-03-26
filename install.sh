@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
 
 ssd="/dev/sda"
 my_user="andre"
@@ -77,13 +77,13 @@ function create_swapfile() {
 function install_systemd_boot() {
   echo "+ Installing bootloader"
   _chroot "bootctl --path=/boot install" &>/dev/null
-  _chroot "wget ${dotfiles_url}/bootloader/loader.conf -qO /boot/loader/loader.conf"
-  _chroot "wget ${dotfiles_url}/bootloader/arch.conf -qO /boot/loader/entries/arch.conf"
+  _chroot "wget ${configs_url}/bootloader/loader.conf -qO /boot/loader/loader.conf"
+  _chroot "wget ${configs_url}/bootloader/arch.conf -qO /boot/loader/entries/arch.conf"
   _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch.conf"
-  _chroot "wget ${dotfiles_url}/bootloader/arch-rescue.conf -qO /boot/loader/entries/arch-rescue.conf"
+  _chroot "wget ${configs_url}/bootloader/arch-rescue.conf -qO /boot/loader/entries/arch-rescue.conf"
   _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch-rescue.conf"
   _chroot "mkdir -p /etc/pacman.d/hooks" &>/dev/null
-  _chroot "wget ${dotfiles_url}/bootloader/systemd-boot.hook -qO /etc/pacman.d/hooks/systemd-boot.hook"
+  _chroot "wget ${configs_url}/bootloader/systemd-boot.hook -qO /etc/pacman.d/hooks/systemd-boot.hook"
   _chroot "mkinitcpio -p linux-lts" &>/dev/null
 }
 
@@ -101,12 +101,6 @@ function setup_system() {
   _chroot "echo root:${my_user} | chpasswd"
   _chroot "sed -i '/%wheel ALL=(ALL) NOPASSWD: ALL/s/^#//' /etc/sudoers"
   _chroot "echo \"$machine_name\" > /etc/hostname"
-
-  echo "+ Installing yay package manager"
-  _chuser "mkdir -p /home/${my_user}/tmp"
-  _chuser "cd /home/${my_user}/tmp && git clone https://aur.archlinux.org/yay.git"
-  _chuser "cd /home/${my_user}/tmp/yay && makepkg -si --noconfirm"
-  _chuser "rm -rf /home/${my_user}/tmp"
 
   echo "+ Putting the pos-install.sh script in /home"
   _chuser "wget ${pos_install_url} -qO /home/${my_user}/pos-install.sh"

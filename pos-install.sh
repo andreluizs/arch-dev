@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/config.sh)
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
 
 # XFCE
 xfce=(

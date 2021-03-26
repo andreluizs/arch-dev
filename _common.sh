@@ -4,11 +4,10 @@ set -o errexit
 set -o pipefail
 
 base_git_hub_url="https://raw.githubusercontent.com/andreluizs/arch-dev/master"
-dotfiles_url="${base_git_hub_url}/dotfiles"
+configs_url="${base_git_hub_url}/configs"
 pos_install_url="${base_git_hub_url}/pos-install.sh"
 dev_install_url="${base_git_hub_url}/dev-install.sh"
 
-# Help Functions
 function _chroot() {
   arch-chroot /mnt /bin/bash -c "$1"
 }
@@ -33,7 +32,7 @@ function _spinner() {
 function install_pkg() {
   local packages=("$@")
   for i in "${packages[@]}"; do
-    echo "+ Instalando: ${i}"
+    echo "+ Installing: ${i}"
     yay -S ${i} --needed --noconfirm --quiet &>/dev/null
   done
 }
