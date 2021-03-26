@@ -17,7 +17,7 @@ function init() {
   clear
   echo "+-------------- ARCH DEV - INSTALL -------------+"
   umount -R /mnt &>/dev/null || /bin/true
-  echo "+ Setting mirrors."
+  echo "+ Setting mirrors"
   pacman -Sy reflector --needed --noconfirm &>/dev/nul
   reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist &>/dev/nul
 }
@@ -33,7 +33,7 @@ function format_hd() {
   echo "+ Creating partition /root"
   parted "$ssd" mkpart primary ext4 513MiB 100% &>/dev/nul
 
-  echo "+ Formatting partitions."
+  echo "+ Formatting partitions"
   mkfs.vfat -F32 "${ssd}1" -n BOOT &>/dev/nul
   mkfs.ext4 -F -L ROOT "${ssd}2" &>/dev/nul
 }
@@ -75,7 +75,7 @@ function create_swapfile() {
 }
 
 function install_systemd_boot() {
-  echo "+ Installing bootloader."
+  echo "+ Installing bootloader"
   _chroot "bootctl --path=/boot install" &>/dev/null
   _chroot "wget ${dotfiles_url}/bootloader/loader.conf -qO /boot/loader/loader.conf"
   _chroot "wget ${dotfiles_url}/bootloader/arch.conf -qO /boot/loader/entries/arch.conf"
