@@ -1,33 +1,56 @@
 #!/usr/bin/env sh
 
-set -o errexit
-set -o pipefail
-
 # source config.sh
 source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/config.sh)
 
-function install_desktop_environment() {
-  for i in "${gnome[@]}"; do
-    echo "+ Instalando: ${i}"
-    yay -S ${i} --needed --noconfirm --quiet &>/dev/null
-  done
-}
+# XFCE
+xfce=(
+  "xfce4"
+  "xfce4-goodies"
+  "file-roller"
+  "xfce4-whiskermenu-plugin"
+  "alacarte"
+  "thunar-volman"
+  "thunar-archive-plugin"
+  "xfce4-dockbarx-plugin"
+  "xfce-theme-greybird"
+  "elementary-xfce-icons"
+  "mugshot"
+  "galculator"
+  "pavucontrol"
+  "gnome-keyring"
+  "xfce-polkit-git"
+  "lightdm"
+  "lightdm-gtk-greeter"
+  "lightdm-gtk-greeter-settings"
+  "light-locker"
+)
 
-function install_light_dm() {
-  echo "Install LightDM"
-  yay -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings light-locker --needed --noconfirm --quiet
-  sudo sed -i '/^#greeter-session/c \greeter-session=lightdm-gtk-greeter' /etc/lightdm/lightdm.conf
-  sudo systemctl enable lightdm.service
-}
+# Gnome
+gnome=(
+  "gnome"
+  "gnome-terminal"
+  "gdm"
+  "gnome-tweaks"
+  "nautilus"
+  "nautilus-sendto"
+  "gnome-usage"
+  "chrome-gnome-shell"
+  "xdg-user-dirs-gtk"
+  "fwupd"
+  "seahorse"
+)
 
-function install_extras() {
-  for i in "${extra[@]}"; do
-    echo "+ Instalando: ${i}"
-    yay -S ${i} --needed --noconfirm --quiet &>/dev/null
-  done
-}
+extra=(
+  "google-chrome"
+  "libreoffice-fresh"
+  "libreoffice-fresh-pt-br"
+  "pamac-aur-tray-appindicator-git"
+  "telegram-desktop"
+  "virtualbox-host-dkms"
+  "virtualbox"
+)
 
 clear
-install_desktop_environment
-#install_light_dm
-install_extras
+install_pkg $gnome
+install_pkg $extra

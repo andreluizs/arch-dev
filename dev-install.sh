@@ -1,17 +1,18 @@
 #!/usr/bin/env sh
 
-set -o errexit
-set -o pipefail
-
 # source config.sh
 source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/config.sh)
 
-function install_developer_tools() {
-  for i in "${developer_tools[@]}"; do
-    echo "+ Instalando: ${i}"
-    yay -S ${i} --needed --noconfirm --quiet &>/dev/null
-  done
-}
+developer_tools=(
+  "ttf-fira-code"
+  "ttf-jetbrains-mono"
+  "visual-studio-code-bin"
+  "insomnia"
+  "slack-desktop"
+  "teams-insiders"
+  "openfortigui"
+  "mongodb-compass"
+)
 
 function install_docker() {
   echo "+ Instalando o Docker e Docker Compose"
@@ -26,6 +27,7 @@ function install_docker() {
 }
 
 function install_intellij() {
+  local intellij_version="ideaIC-2020.3.3.tar.gz"
   mkdir -p ~/.tmp_intellij && cd ~/.tmp_intellij
   echo "+ Baixando"
   wget -c "https://download.jetbrains.com/idea/${intellij_version}" -q --show-progress
@@ -41,6 +43,7 @@ function install_intellij() {
 }
 
 function install_maven() {
+  local maven_version="apache-maven-3.6.3-bin.tar.gz"
   mkdir -p ~/.tmp_maven && cd ~/.tmp_maven
   echo "# Baixando"
   wget -c "http://ftp.unicamp.br/pub/apache/maven/maven-3/3.6.3/binaries/${maven_version}" -q --show-progress
@@ -59,7 +62,7 @@ function install_maven() {
 }
 
 clear
-install_developer_tools
+install_pkg $developer_tools
 install_docker
 install_intellij
 install_maven
