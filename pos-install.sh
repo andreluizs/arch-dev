@@ -26,40 +26,20 @@ xfce=(
   "light-locker"
 )
 
-# Gnome
-gnome=(
-  "gnome"
-  "gnome-terminal"
-  "gdm"
-  "gnome-tweaks"
-  "nautilus"
-  "nautilus-sendto"
-  "gnome-usage"
-  "chrome-gnome-shell"
-  "xdg-user-dirs-gtk"
-  "fwupd"
-  "seahorse"
-)
+# Gnome Packages
+gnome="gnome gnome-terminal gdm gnome-tweaks nautilus nautilus-sendto gnome-usage "
+gnome+="chrome-gnome-shell xdg-user-dirs-gtk fwupd seahorse"
 
-extra=(
-  "google-chrome"
-  "libreoffice-fresh"
-  "libreoffice-fresh-pt-br"
-  "pamac-aur-tray-appindicator-git"
-  "telegram-desktop"
-  "virtualbox-host-dkms"
-  "virtualbox"
-)
+# Extra Packages
+extra="google-chrome libreoffice-fresh libreoffice-fresh-pt-br pamac-aur-tray-appindicator-git "
+extra+="telegram-desktop virtualbox-host-dkms virtualbox"
 
-function install_yay() {
-  echo "+ Installing yay package manager"
-  mkdir -p $HOME/tmp && cd $HOME/tmp
-  git clone https://aur.archlinux.org/yay.git
-  cd yay && makepkg -si --noconfirm
-  rm -rf $HOME/tmp
+function install_pkg() {
+  package_name=$1
+  pkg=$2
+  echo "Installing: ${package_name}"
+  yay -S ${pkg} --needed --noconfirm --quiet
 }
 
-clear
-install_yay
-install_pkg $gnome
-install_pkg $extra
+install_pkg "Gnome" $gnome
+install_pkg "Extra" $extra

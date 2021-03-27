@@ -102,6 +102,12 @@ function setup_system() {
   _chroot "sed -i '/%wheel ALL=(ALL) NOPASSWD: ALL/s/^#//' /etc/sudoers"
   _chroot "echo \"$machine_name\" > /etc/hostname"
 
+  echo "+ Installing yay package manager"
+  _chuser "mkdir -p /home/${my_user}/tmp"
+  _chuser "cd /home/${my_user}/tmp && git clone https://aur.archlinux.org/yay.git" &>/dev/null
+  _chuser "cd /home/${my_user}/tmp/yay && makepkg -si --noconfirm" &>/dev/null
+  _chuser "rm -rf /home/${my_user}/tmp"
+
   echo "+ Putting the pos-install.sh script in /home"
   _chuser "wget ${pos_install_url} -qO /home/${my_user}/pos-install.sh"
 
