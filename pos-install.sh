@@ -51,6 +51,15 @@ extra=(
   "virtualbox"
 )
 
+function install_yay() {
+  echo "+ Installing yay package manager"
+  mkdir -p $HOME/tmp && cd $HOME/tmp
+  git clone https://aur.archlinux.org/yay.git
+  cd yay && makepkg -si --noconfirm
+  rm -rf $HOME/tmp
+}
+
 clear
+install_yay
 install_pkg $gnome
 install_pkg $extra
