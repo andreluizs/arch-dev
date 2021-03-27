@@ -14,7 +14,7 @@
 > bash <(curl -s -L bit.do/arch-dev/install.sh) 
 > ```
 ## Pos-Install
-> After install base system, reboot and inside your `$HOME` and execute:
+> After install base system, reboot and inside your `$HOME` execute:
 > ```shell 
 > # Desktop Environment
 > bash pos-install.sh
@@ -22,13 +22,4 @@
 > # Tools for Developer
 > bash dev-install.sh
 >```
-## Execute scripts directly
->```shell 
-> # Pos-Install
-> bash <(curl -s -L bit.do/arch-dev/pos-install.sh) 
->
-> # Tools for Developer
-> bash <(curl -s -L bit.do/arch-dev/dev-install.sh) 
-> ```
-
 
