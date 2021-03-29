@@ -23,7 +23,7 @@
 > bash dev-install.sh
 >```
 
-### Test Script
+## Test Script
 - Create VM
 > ```shell 
 > VBoxManage createvm --name "Arch" --ostype ArchLinux_64 --register
