@@ -1,18 +1,7 @@
 #!/usr/bin/env sh
 
-# source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
-
-developer_tools=(
-  "ttf-fira-code"
-  "ttf-jetbrains-mono"
-  "visual-studio-code-bin"
-  "insomnia"
-  "slack-desktop"
-  "teams-insiders"
-  "openfortigui"
-  "mongodb-compass"
-)
+set -o errexit
+set -o pipefail
 
 function install_docker() {
   echo "+ Instalando o Docker e Docker Compose"
@@ -61,8 +50,15 @@ function install_maven() {
   echo "# Instalação concluída"
 }
 
+function install_devtools() {
+  local developer_tools="ttf-fira-code ttf-jetbrains-mono visual-studio-code-bin "
+  developer_tools+="insomnia slack-desktop teams-insiders openfortigui mongodb-compass"
+  echo "# Installing DevTools"
+  yay -S ${developer_tools} --needed --noconfirm --quiet &>/dev/null
+}
+
 clear
-install_pkg $developer_tools
 install_docker
 install_intellij
 install_maven
+install_devtools

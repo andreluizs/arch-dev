@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-# source config.sh
-source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
+set -o errexit
+set -o pipefail
 
 # XFCE
 xfce=(
@@ -27,19 +27,21 @@ xfce=(
 )
 
 # Gnome Packages
-gnome="gnome gnome-terminal gdm gnome-tweaks nautilus nautilus-sendto gnome-usage "
-gnome+="chrome-gnome-shell xdg-user-dirs-gtk fwupd seahorse"
-
-# Extra Packages
-extra="google-chrome libreoffice-fresh libreoffice-fresh-pt-br pamac-aur-tray-appindicator-git "
-extra+="telegram-desktop virtualbox-host-dkms virtualbox"
-
-function install_pkg() {
-  package_name=$1
-  pkg=$2
-  echo "Installing: ${package_name}"
-  yay -S ${pkg} --needed --noconfirm --quiet
+function install_gnome() {
+  local gnome="gnome-shell gnome-terminal gdm gnome-tweaks nautilus nautilus-sendto chrome-gnome-shell fwupd"
+  echo "# Installing Gnome"
+  yay -S ${gnome} --needed --noconfirm --quiet &>/dev/null
 }
 
-install_pkg "Gnome" $gnome
-install_pkg "Extra" $extra
+# Extra Packages
+function install_extra() {
+  local extra="google-chrome libreoffice-fresh libreoffice-fresh-pt-br pamac-aur "
+  extra+="telegram-desktop virtualbox-host-dkms virtualbox"
+  echo "# Installing Extra"
+  yay -S ${extra} --needed --noconfirm --quiet &>/dev/null
+}
+
+clear
+yay -Syyu --noconfirm &> /dev/null
+install_gnome
+install_extra

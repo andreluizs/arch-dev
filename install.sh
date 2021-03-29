@@ -91,6 +91,7 @@ function setup_system() {
   echo "+ Setting language"
   _chroot "echo -e \"KEYMAP=br-abnt2\\nFONT=\\nFONT_MAP=\" > /etc/vconsole.conf"
   _chroot "sed -i '/en_US/,+1 s/^#//' /etc/locale.gen"
+  _chroot "sed -i '/pt_BR/,+1 s/^#//' /etc/locale.gen"
   _chroot "locale-gen" 1>/dev/null
   _chroot "echo LANG=en_US.UTF-8 > /etc/locale.conf"
   _chroot "export LANG=en_US.UTF-8"
