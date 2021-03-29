@@ -11,7 +11,7 @@
 ## Install Base System
 > ```shell 
 > # Warning this action will be erase your disk
-> bash <(curl -s -L bit.do/arch-dev/install.sh) 
+> bash <(curl -s -L bit.do/arch-dev) 
 > ```
 ## Pos-Install
 > After install base system, reboot and inside your `$HOME` execute:
