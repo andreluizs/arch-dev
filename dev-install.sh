@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-set -o errexit
-set -o pipefail
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
 
 function install_docker() {
   echo "+ Instalando o Docker e Docker Compose"
