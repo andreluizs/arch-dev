@@ -8,10 +8,11 @@ my_user_name="André Santos"
 machine_name="arch"
 
 # Pacstrap
-base_package="intel-ucode networkmanager networkmanager-openconnect bash-completion xorg xf86-video-intel ntfs-3g "
+base_package="intel-ucode networkmanager networkmanager-openconnect bash-completion xorg ntfs-3g "
 base_package+="gnome-themes-standard gtk-engine-murrine gvfs xdg-user-dirs git nano "
 base_package+="noto-fonts-emoji ttf-dejavu ttf-liberation noto-fonts ttf-droid "
-base_package+="pulseaudio pulseaudio-alsa p7zip zip unzip unrar wget openssh xclip curl"
+base_package+="pulseaudio pulseaudio-alsa p7zip zip unzip unrar wget openssh xclip curl "
+base_package+="mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader"
 
 function init() {
   clear
@@ -93,8 +94,8 @@ function setup_system() {
   _chroot "sed -i '/en_US/,+1 s/^#//' /etc/locale.gen"
   _chroot "sed -i '/pt_BR/,+1 s/^#//' /etc/locale.gen"
   _chroot "locale-gen" 1>/dev/null
-  _chroot "echo LANG=en_US.UTF-8 > /etc/locale.conf"
-  _chroot "export LANG=en_US.UTF-8"
+  _chroot "echo LANG=pt_BR.UTF-8 > /etc/locale.conf"
+  _chroot "export LANG=pt_BR.UTF-8"
 
   echo "+ Creating user"
   _chroot "useradd -m -g users -G wheel -c \"${my_user_name}\" -s /bin/bash $my_user"
@@ -114,6 +115,11 @@ function setup_system() {
 
   echo "+ Putting the dev-install.sh script in /home"
   _chuser "wget ${dev_install_url} -qO /home/${my_user}/dev-install.sh"
+
+  echo "+ Enable services "
+  _chroot "systemctl enable NetworkManager.service"
+  _chroot "systemctl enable fstrim.timer"
+  _chroot "systemctl enable reflector.timer"
 }
 
 init

@@ -28,20 +28,21 @@ xfce=(
 
 # Gnome Packages
 function install_gnome() {
-  local gnome="gnome-shell gnome-terminal gdm gnome-tweaks nautilus nautilus-sendto chrome-gnome-shell fwupd"
+  local gnome="gnome-shell gnome-terminal gdm gnome-tweaks nautilus nautilus-sendto "
+  gnome+="chrome-gnome-shell fwupd gnome-control-center gnome-calculator gedit gnome-keyring gnome-backgrounds "
+  gnome+="seahorse gnome-system-monitor eog gnome-screenshot gnome-software kooha celluloid gnome-sound-recorder gnome-usage"
   echo "# Installing Gnome"
   yay -S ${gnome} --needed --noconfirm --quiet &>/dev/null
 }
 
 # Extra Packages
 function install_extra() {
-  local extra="google-chrome libreoffice-fresh libreoffice-fresh-pt-br pamac-aur "
-  extra+="telegram-desktop virtualbox-host-dkms virtualbox"
+  local extra="google-chrome libreoffice-fresh libreoffice-fresh-pt-br pamac-aur-git "
+  extra+="telegram-desktop virtualbox-host-dkms virtualbox hardcode-tray-git qt5-svg "
   echo "# Installing Extra"
   yay -S ${extra} --needed --noconfirm --quiet &>/dev/null
 }
 
 clear
-yay -Syyu --noconfirm &> /dev/null
 install_gnome
 install_extra

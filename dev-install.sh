@@ -3,6 +3,8 @@
 set -o errexit
 set -o pipefail
 
+source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
+
 function install_docker() {
   echo "+ Instalando o Docker e Docker Compose"
   yay -S docker docker-compose --needed --noconfirm --quiet
@@ -57,8 +59,21 @@ function install_devtools() {
   yay -S ${developer_tools} --needed --noconfirm --quiet &>/dev/null
 }
 
+function install_zsh() {
+  echo "# Installing zsh"
+  yay -S zsh zsh-completions --needed --noconfirm --quiet
+  sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+}
+
+function install_nvm() {
+  echo "# Installing nvm"
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+}
+
 clear
 install_docker
 install_intellij
 install_maven
 install_devtools
+install_zsh
+install_nvm
