@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-set -o errexit
-set -o pipefail
-
 source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
 
 function install_docker() {
@@ -54,7 +51,7 @@ function install_maven() {
 
 function install_devtools() {
   local developer_tools="ttf-fira-code ttf-jetbrains-mono visual-studio-code-bin "
-  developer_tools+="insomnia slack-desktop teams-insiders openfortigui mongodb-compass"
+  developer_tools+="insomnia slack-desktop teams openfortigui mongodb-compass"
   echo "# Installing DevTools"
   yay -S ${developer_tools} --needed --noconfirm --quiet &>/dev/null
 }

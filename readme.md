@@ -28,9 +28,9 @@
 > ```shell 
 > VBoxManage createvm --name "Arch" --ostype ArchLinux_64 --register
 > VBoxManage modifyvm "Arch" --cpus 2 --memory 4096 --vram 128 --firmware efi --graphicscontroller vmsvga --usbohci on --mouse usbtablet --accelerate3d on
-> VBoxManage createhd --filename "$HOME/VMs/Arch.vdi" --size 30000
+> VBoxManage createhd --filename "$HOME/VirtualBox VMs/Arch/Arch.vdi" --size 30000
 > VBoxManage storagectl "Arch" --name "SATA Controller" --add sata --controller IntelAhci
-> VBoxManage storageattach "Arch" --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "$HOME/VMs/Arch.vdi"
+> VBoxManage storageattach "Arch" --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "$HOME/VirtualBox VMs/Arch/Arch.vdi"
 > VBoxManage storagectl "Arch" --name "IDE Controller" --add ide --controller PIIX4
 > VBoxManage storageattach "Arch" --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium emptydrive
 > VBoxManage modifyvm "Arch" --boot1 dvd --boot2 disk --boot3 none --boot4 none
