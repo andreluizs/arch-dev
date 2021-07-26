@@ -19,6 +19,7 @@ function init() {
   echo "+-------------- ARCH DEV - INSTALL -------------+"
   umount -R /mnt &>/dev/null || /bin/true
   echo "+ Setting mirrors"
+  sed -i '/multilib]/,+1  s/^#//' /etc/pacman.conf
   pacman -Sy reflector --needed --noconfirm &>/dev/nul
   reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist &>/dev/nul
 }
