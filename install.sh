@@ -11,7 +11,7 @@ machine_name="arch"
 base_package="intel-ucode networkmanager networkmanager-openconnect bash-completion xorg ntfs-3g "
 base_package+="gnome-themes-standard gtk-engine-murrine gvfs xdg-user-dirs git nano "
 base_package+="noto-fonts-emoji ttf-dejavu ttf-liberation noto-fonts ttf-droid "
-base_package+="pulseaudio pulseaudio-alsa p7zip zip unzip unrar wget openssh xclip curl "
+base_package+="pipewire pipewire-pulse pipewire-alsa p7zip zip unzip unrar wget openssh xclip curl "
 base_package+="mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader"
 
 function init() {
