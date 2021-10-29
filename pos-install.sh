@@ -38,7 +38,7 @@ function install_gnome() {
 # Extra Packages
 function install_extra() {
   local extra="google-chrome libreoffice-fresh libreoffice-fresh-pt-br pamac-aur-git "
-  extra+="telegram-desktop virtualbox-host-dkms virtualbox hardcode-tray-git qt5-svg "
+  extra+="telegram-desktop hardcode-tray-git qt5-svg "
   echo "# Installing Extra"
   yay -S ${extra} --needed --noconfirm --quiet &>/dev/null
 }
