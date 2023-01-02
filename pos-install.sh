@@ -43,6 +43,14 @@ function install_extra() {
   yay -S ${extra} --needed --noconfirm --quiet &>/dev/null
 }
 
+
+
 clear
 install_gnome
 install_extra
+
+# Lenovo Keyboard
+setxkbmap -model thinkpad60 -layout br
+
+# Firmware
+yay -Sy fwupd gnome-firmware

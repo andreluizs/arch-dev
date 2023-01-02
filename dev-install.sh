@@ -51,7 +51,7 @@ function install_maven() {
 
 function install_devtools() {
   local developer_tools="ttf-fira-code ttf-jetbrains-mono visual-studio-code-bin "
-  developer_tools+="insomnia slack-desktop teams openfortigui mongodb-compass"
+  developer_tools+="insomnia slack-desktop teams "
   echo "# Installing DevTools"
   yay -S ${developer_tools} --needed --noconfirm --quiet &>/dev/null
 }

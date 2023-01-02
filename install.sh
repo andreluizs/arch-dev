@@ -2,17 +2,18 @@
 
 source <(curl -s https://raw.githubusercontent.com/andreluizs/arch-dev/master/_common.sh)
 
-ssd="/dev/sda"
-my_user="andre"
-my_user_name="André Santos"
-machine_name="arch"
+ssd="/dev/nvme0n1"
+user="andre"
+user_name="André Santos"
+hostname="arch"
 
 # Pacstrap
 base_package="intel-ucode networkmanager networkmanager-openconnect bash-completion xorg ntfs-3g "
 base_package+="gnome-themes-standard gtk-engine-murrine gvfs xdg-user-dirs git nano "
-base_package+="noto-fonts-emoji ttf-dejavu ttf-liberation noto-fonts ttf-droid ttf-cascadia-code"
-base_package+="pipewire pipewire-pulse pipewire-alsa p7zip zip unzip unrar wget openssh xclip curl "
-base_package+="mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader"
+base_package+="noto-fonts-emoji noto-fonts ttf-cascadia-code "
+base_package+="pipewire pipewire-pulse pipewire-alsa sof-firmware p7zip zip unzip unrar wget openssh xclip curl "
+base_package+="mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader "
+
 
 function init() {
   clear
@@ -21,7 +22,7 @@ function init() {
   echo "+ Setting mirrors"
   sed -i '/multilib]/,+1  s/^#//' /etc/pacman.conf
   pacman -Sy reflector --needed --noconfirm &>/dev/nul
-  reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist &>/dev/nul
+  reflector --country br,us --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist &>/dev/null
 }
 
 function format_hd() {
@@ -36,16 +37,16 @@ function format_hd() {
   parted "$ssd" mkpart primary ext4 513MiB 100% &>/dev/nul
 
   echo "+ Formatting partitions"
-  mkfs.vfat -F32 "${ssd}1" -n BOOT &>/dev/nul
-  mkfs.ext4 -F -L ROOT "${ssd}2" &>/dev/nul
+  mkfs.vfat -F32 "${ssd}p1" -n BOOT &>/dev/nul
+  mkfs.ext4 -F -L ROOT "${ssd}p2" &>/dev/nul
 }
 
 function mount_partition() {
   echo "+ Mounting partitions"
-  mount "${ssd}2" /mnt
+  mount "${ssd}p2" /mnt
   mkdir -p /mnt/boot
   mkdir -p /mnt/home
-  mount "${ssd}1" /mnt/boot
+  mount "${ssd}p1" /mnt/boot
   echo "+-------------------- TABLE --------------------+"
   lsblk ${ssd} -o name,size,mountpoint
   echo "+-----------------------------------------------+"
@@ -61,7 +62,7 @@ function install_base_system() {
 
   echo "+ Updating pacman's mirrorlist"
   _chroot "pacman -S reflector --needed --noconfirm" &>/dev/null
-  _chroot "reflector --country Brazil --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist" &>/dev/null
+  _chroot "reflector --country br,us --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist" &>/dev/null
   _chroot "sed -i '/multilib]/,+1  s/^#//' /etc/pacman.conf"
   _chroot "pacman -Sy" &>/dev/null
 
@@ -81,9 +82,9 @@ function install_systemd_boot() {
   _chroot "bootctl --path=/boot install" &>/dev/null
   _chroot "wget ${configs_url}/bootloader/loader.conf -qO /boot/loader/loader.conf"
   _chroot "wget ${configs_url}/bootloader/arch.conf -qO /boot/loader/entries/arch.conf"
-  _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch.conf"
+  _chroot "sed -i \"s%{device}%${ssd}p2%\" /boot/loader/entries/arch.conf"
   _chroot "wget ${configs_url}/bootloader/arch-rescue.conf -qO /boot/loader/entries/arch-rescue.conf"
-  _chroot "sed -i \"s%{device}%${ssd}2%\" /boot/loader/entries/arch-rescue.conf"
+  _chroot "sed -i \"s%{device}%${ssd}p2%\" /boot/loader/entries/arch-rescue.conf"
   _chroot "mkdir -p /etc/pacman.d/hooks" &>/dev/null
   _chroot "wget ${configs_url}/bootloader/systemd-boot.hook -qO /etc/pacman.d/hooks/systemd-boot.hook"
   _chroot "mkinitcpio -p linux-lts" &>/dev/null
@@ -99,28 +100,27 @@ function setup_system() {
   _chroot "export LANG=pt_BR.UTF-8"
 
   echo "+ Creating user"
-  _chroot "useradd -m -g users -G wheel -c \"${my_user_name}\" -s /bin/bash $my_user"
-  _chroot "echo ${my_user}:${my_user} | chpasswd"
-  _chroot "echo root:${my_user} | chpasswd"
+  _chroot "useradd -m -g users -G wheel -c \"${user_name}\" -s /bin/bash $user"
+  _chroot "echo ${user}:${user} | chpasswd"
+  _chroot "echo root:${user} | chpasswd"
   _chroot "sed -i '/%wheel ALL=(ALL) NOPASSWD: ALL/s/^#//' /etc/sudoers"
-  _chroot "echo \"$machine_name\" > /etc/hostname"
+  _chroot "echo \"$hostname\" > /etc/hostname"
 
   echo "+ Installing yay package manager"
-  _chuser "mkdir -p /home/${my_user}/tmp"
-  _chuser "cd /home/${my_user}/tmp && git clone https://aur.archlinux.org/yay.git" &>/dev/null
-  _chuser "cd /home/${my_user}/tmp/yay && makepkg -si --noconfirm" &>/dev/null
-  _chuser "rm -rf /home/${my_user}/tmp"
+  _chuser "mkdir -p /home/${user}/tmp"
+  _chuser "cd /home/${user}/tmp && git clone https://aur.archlinux.org/yay.git" &>/dev/null
+  _chuser "cd /home/${user}/tmp/yay && makepkg -si --noconfirm" &>/dev/null
+  _chuser "rm -rf /home/${user}/tmp"
 
   echo "+ Putting the pos-install.sh script in /home"
-  _chuser "wget ${pos_install_url} -qO /home/${my_user}/pos-install.sh"
+  _chuser "wget ${pos_install_url} -qO /home/${user}/pos-install.sh"
 
   echo "+ Putting the dev-install.sh script in /home"
-  _chuser "wget ${dev_install_url} -qO /home/${my_user}/dev-install.sh"
+  _chuser "wget ${dev_install_url} -qO /home/${user}/dev-install.sh"
 
   echo "+ Enable services "
   _chroot "systemctl enable NetworkManager.service"
   _chroot "systemctl enable fstrim.timer"
-  _chroot "systemctl enable reflector.timer"
 }
 
 init
